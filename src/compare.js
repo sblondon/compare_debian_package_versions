@@ -10,11 +10,11 @@
     var _v2 = new Version(v2)
 
     var epoch_number_comparision = compare_epoch_number(_v1, _v2)
-    if (epoch_number_comparision != EQUAL)
+    if (epoch_number_comparision !== EQUAL)
         return epoch_number_comparision
 
     var upstream_number_comparision = compare_upstream_version_numbers(_v1, _v2)
-    if (upstream_number_comparision == EQUAL){
+    if (upstream_number_comparision === EQUAL){
         return compare_revision_numbers(_v1, _v2)
     }
     else
