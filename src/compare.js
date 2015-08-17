@@ -11,7 +11,7 @@
     for(var index=0; index < version_numbers.length; index++){
       this.version_numbers.push(parseInt(version_numbers[index]))
     }
-    this.revision_number = parseInt(version_string.split("-")[1])
+    this.revision_number = parseInt(version_string.split("-")[1]) || 0
   }
 
   function compare_version_numbers(v1, v2){
