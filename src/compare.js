@@ -31,33 +31,25 @@
     }
   }
 
-  function compare_upstream_version_numbers(v1, v2){
-    var MAX_LENGTH = Math.max(v1.upstream_numbers.length, v2.upstream_numbers.length)
+  function compare_integer_lists(l1, l2){
+     var MAX_LENGTH = Math.max(l1.length, l2.length)
     for(var index=0; index < MAX_LENGTH; index++){
-      var v1_number = v1.upstream_numbers[index]
-      var v2_number = v2.upstream_numbers[index]
-      if (v2_number === undefined || v1_number > v2_number)
+      var number_1 = l1[index]
+      var number_2 = l2[index]
+      if (number_2 === undefined || number_1 > number_2)
           return GREATER
-      if (v1_number === undefined || v1_number < v2_number)
+      if (number_1 === undefined || number_1 < number_2)
           return LOWER
      }
     return EQUAL
   }
 
+  function compare_upstream_version_numbers(v1, v2){
+      return compare_integer_lists(v1.upstream_numbers, v2.upstream_numbers)
+  }
+
   function compare_revision_numbers(v1, v2){
-    var MAX_LENGTH = Math.max(
-          v1.revision_numbers.length, v2.revision_numbers.length)
-    for(var index=0; index < MAX_LENGTH; index++){
-      var v1_number = v1.revision_numbers[index]
-      var v2_number = v2.revision_numbers[index]
-      if (v2_number === undefined || v1_number > v2_number){
-          return GREATER
-      }
-      if (v1_number === undefined || v1_number < v2_number){
-          return LOWER
-      }
-    }
-    return EQUAL
+      return compare_integer_lists(v1.revision_numbers, v2.revision_numbers)
   }
 
   function compare_epoch_number(v1, v2){
