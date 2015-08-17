@@ -5,13 +5,22 @@
   var EQUAL = 0
 
   function Version(version_string){
-    var version_numbers = version_string.split("-")[0].split(".")
+    if(version_string.indexOf(":") !== -1)
+        this.epoch_number = parseInt(version_string.split(":")[0])
+    else
+        this.epoch_number = 0
+
+    if(this.epoch_number)
+        var without_epoch_number = version_string.split(":")[1]
+    else
+        var without_epoch_number = version_string
+    var version_numbers = without_epoch_number.split("-")[0].split(".")
     this.version_numbers = []
     
-    for(var index=0; index < version_numbers.length; index++){
-      this.version_numbers.push(parseInt(version_numbers[index]))
+    for(var index=0; index < without_epoch_number.length; index++){
+      this.version_numbers.push(parseInt(without_epoch_number[index]))
     }
-    this.revision_number = parseInt(version_string.split("-")[1]) || 0
+    this.revision_number = parseInt(without_epoch_number.split("-")[1]) || 0
   }
 
   function compare_version_numbers(v1, v2){
@@ -35,9 +44,21 @@
     return EQUAL
   }
 
+  function compare_epoch_number(v1, v2){
+    if (v1.epoch_number > v2.epoch_number)
+        return GREATER
+    if (v1.epoch_number < v2.epoch_number)
+        return LOWER
+    return EQUAL
+  }
+
   function compare_debian_package_versions(v1, v2){
     var _v1 = new Version(v1)
     var _v2 = new Version(v2)
+
+    var epoch_number_comparision = compare_epoch_number(_v1, _v2)
+    if (epoch_number_comparision != EQUAL)
+        return epoch_number_comparision
 
     var version_number_comparision = compare_version_numbers(_v1, _v2)
     if (version_number_comparision == EQUAL)
