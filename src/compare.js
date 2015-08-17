@@ -4,22 +4,22 @@
   var LOWER = -1
   var EQUAL = 0
 
-  function Version(version_string){
-    if(version_string.indexOf(":") !== -1)
-        this.epoch_number = parseInt(version_string.split(":")[0])
-    else
+  function Version(raw_version){
+    if(raw_version.indexOf(":") !== -1){
+        this.epoch_number = parseInt(raw_version.split(":")[0])
+        var without_epoch_number = raw_version.split(":")[1]
+    }
+    else{
         this.epoch_number = 0
+        var without_epoch_number = raw_version
+    }
 
-    if(this.epoch_number)
-        var without_epoch_number = version_string.split(":")[1]
-    else
-        var without_epoch_number = version_string
     var version_numbers = without_epoch_number.split("-")[0].split(".")
     this.version_numbers = []
-    
     for(var index=0; index < without_epoch_number.length; index++){
       this.version_numbers.push(parseInt(without_epoch_number[index]))
     }
+
     this.revision_number = parseInt(without_epoch_number.split("-")[1]) || 0
   }
 
