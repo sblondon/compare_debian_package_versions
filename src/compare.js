@@ -15,12 +15,13 @@
   }
 
   function compare_version_numbers(v1, v2){
-    for(var index=0; index< v1.version_numbers.length; index++){
+    var MAX_LENGTH = Math.max(v1.version_numbers.length, v2.version_numbers.length)
+    for(var index=0; index < MAX_LENGTH; index++){
       var v1_number = v1.version_numbers[index]
       var v2_number = v2.version_numbers[index]
-      if (v1_number > v2_number)
+      if (v2_number === undefined || v1_number > v2_number)
           return GREATER
-      if (v1_number < v2_number)
+      if (v1_number === undefined || v1_number < v2_number)
           return LOWER
      }
     return EQUAL
@@ -33,7 +34,6 @@
         return LOWER
     return EQUAL
   }
-
 
   function compare_debian_package_versions(v1, v2){
     var _v1 = new Version(v1)
