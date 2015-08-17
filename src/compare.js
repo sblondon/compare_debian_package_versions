@@ -32,14 +32,18 @@
   }
 
   function compare_integer_lists(l1, l2){
-     var MAX_LENGTH = Math.max(l1.length, l2.length)
+    var MAX_LENGTH = Math.max(l1.length, l2.length)
     for(var index=0; index < MAX_LENGTH; index++){
       var number_1 = l1[index]
       var number_2 = l2[index]
-      if (number_2 === undefined || number_1 > number_2)
+      if (number_2 === undefined)
           return GREATER
-      if (number_1 === undefined || number_1 < number_2)
+      if (number_1 === undefined)
           return LOWER
+
+      var result = compare_integer(number_1, number_2)
+      if(result !== EQUAL)
+          return result
      }
     return EQUAL
   }
