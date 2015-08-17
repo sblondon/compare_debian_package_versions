@@ -51,7 +51,7 @@ describe('CompareVersionOfPackages', function() {
     });
   });
 
-  describe('comparison with debian maintainer revision version', function () {
+  describe('comparison with debian maintainer revision versions', function () {
     var LOWER_VERSION = "1.3.0-1"
     var GREATER_VERSION = "1.3.0-2"
 

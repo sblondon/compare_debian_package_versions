@@ -1,4 +1,4 @@
 
 check:
-	mocha
+	@mocha
 
