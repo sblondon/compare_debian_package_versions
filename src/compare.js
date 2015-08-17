@@ -45,17 +45,21 @@
   }
 
   function compare_upstream_version_numbers(v1, v2){
-      return compare_integer_lists(v1.upstream_numbers, v2.upstream_numbers)
+    return compare_integer_lists(v1.upstream_numbers, v2.upstream_numbers)
   }
 
   function compare_revision_numbers(v1, v2){
-      return compare_integer_lists(v1.revision_numbers, v2.revision_numbers)
+    return compare_integer_lists(v1.revision_numbers, v2.revision_numbers)
   }
 
   function compare_epoch_number(v1, v2){
-    if (v1.epoch_number > v2.epoch_number)
+    return compare_integer(v1.epoch_number, v2.epoch_number)
+  }
+
+  function compare_integer(i1, i2){
+    if (i1 > i2)
         return GREATER
-    if (v1.epoch_number < v2.epoch_number)
+    if (i1 < i2)
         return LOWER
     return EQUAL
   }
