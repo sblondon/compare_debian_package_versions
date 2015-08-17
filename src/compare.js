@@ -13,47 +13,47 @@
     if (epoch_number_comparision !== EQUAL)
         return epoch_number_comparision
 
-    var upstream_number_comparision = {}
-    var upstream_number_comparision = compare_upstream_version_numbers(_v1, _v2)
-    if (upstream_number_comparision === EQUAL){
+    var upstream_number_comparison = {}
+    var upstream_number_comparison = compare_upstream_version_numbers(_v1, _v2)
+    if (upstream_number_comparison === EQUAL){
         return compare_revision_numbers(_v1, _v2)
     }
     else
-        return upstream_number_comparision
+        return upstream_number_comparison
   }
 
 
   function Version(raw_version){
+    this.epoch_number = extract_epoch_version(raw_version)
+
     if(raw_version.indexOf(":") !== -1){
-        this.epoch_number = parseInt(raw_version.split(":")[0])
         var without_epoch_number = raw_version.split(":")[1]
     }
     else{
-        this.epoch_number = 0
         var without_epoch_number = raw_version
     }
+    this.upstream_numbers = extract_upstream_version(without_epoch_number)
+    this.revision_numbers = extract_revision_version(without_epoch_number)
+  }
 
-    this.upstream_numbers = parse_upstream_version(without_epoch_number.split("-")[0])
-
-    if(without_epoch_number.indexOf("-") !== -1){
-      var revision_numbers = without_epoch_number.split("-")[1].split(".")
-      this.revision_numbers = []
-      for(var index=0; index < revision_numbers.length; index++){
-        this.revision_numbers.push(parseInt(revision_numbers[index]))
-      }
-    }else{
-          this.revision_numbers = []
+  function extract_epoch_version(version){
+    if(version.indexOf(":") !== -1){
+      return parseInt(version.split(":")[0])
+    }
+    else{
+      return 0
     }
   }
 
-  function parse_upstream_version(version){
-    if(version.indexOf("~") !== -1){
-        var post_digit = version.split("~")[1]
-        var without_post_digit = version.split("~")[0]
+  function extract_upstream_version(version){
+    var upstream_version = version.split("-")[0]
+    if(upstream_version.indexOf("~") !== -1){
+        var post_digit = upstream_version.split("~")[1]
+        var without_post_digit = upstream_version.split("~")[0]
     }
     else{
         var post_digit = ""
-        var without_post_digit = version
+        var without_post_digit = upstream_version
     }
 
     var _digits = version.split(".")
@@ -63,6 +63,19 @@
     }
 
     return {"digits": digits, "post-digit": post_digit}
+  }
+
+  function extract_revision_version(version){
+    if(version.indexOf("-") !== -1){
+      var _revision_numbers = version.split("-")[1].split(".")
+      var revision_numbers = []
+      for(var index=0; index < _revision_numbers.length; index++){
+        revision_numbers.push(parseInt(_revision_numbers[index]))
+      }
+    }else{
+          var revision_numbers = []
+    }
+    return revision_numbers
   }
 
   function compare_epoch_number(v1, v2){
