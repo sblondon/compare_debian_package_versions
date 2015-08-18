@@ -9,31 +9,30 @@
     var _v1 = new Version(v1)
     var _v2 = new Version(v2)
 
-    var epoch_number_comparision = compare_epoch_number(_v1, _v2)
-    if (epoch_number_comparision !== EQUAL)
-        return epoch_number_comparision
+    var epoch_version_comparison = compare_epoch_version(_v1, _v2)
+    if (epoch_version_comparison !== EQUAL)
+        return epoch_version_comparison
 
-    var upstream_number_comparison = {}
-    var upstream_number_comparison = compare_upstream_version_numbers(_v1, _v2)
-    if (upstream_number_comparison === EQUAL){
-        return compare_revision_numbers(_v1, _v2)
+    var upstream_version_comparison = compare_upstream_version_numbers(_v1, _v2)
+    if (upstream_version_comparison === EQUAL){
+        return compare_revision_versions(_v1, _v2)
     }
     else
-        return upstream_number_comparison
+        return upstream_version_comparison
   }
 
 
   function Version(raw_version){
-    this.epoch_number = extract_epoch_version(raw_version)
+    this.epoch_version = extract_epoch_version(raw_version)
 
     if(raw_version.indexOf(":") !== -1){
-        var without_epoch_number = raw_version.split(":")[1]
+        var without_epoch_version = raw_version.split(":")[1]
     }
     else{
-        var without_epoch_number = raw_version
+        var without_epoch_version = raw_version
     }
-    this.upstream_numbers = extract_upstream_version(without_epoch_number)
-    this.revision_numbers = extract_revision_version(without_epoch_number)
+    this.upstream_versions = extract_upstream_version(without_epoch_version)
+    this.revision_versions = extract_revision_version(without_epoch_version)
   }
 
   function extract_epoch_version(version){
@@ -67,19 +66,19 @@
 
   function extract_revision_version(version){
     if(version.indexOf("-") !== -1){
-      var _revision_numbers = version.split("-")[1].split(".")
-      var revision_numbers = []
-      for(var index=0; index < _revision_numbers.length; index++){
-        revision_numbers.push(parseInt(_revision_numbers[index]))
+      var _revision_versions = version.split("-")[1].split(".")
+      var revision_versions = []
+      for(var index=0; index < _revision_versions.length; index++){
+        revision_versions.push(parseInt(_revision_versions[index]))
       }
     }else{
-          var revision_numbers = []
+          var revision_versions = []
     }
-    return revision_numbers
+    return revision_versions
   }
 
-  function compare_epoch_number(v1, v2){
-    return compare_integer(v1.epoch_number, v2.epoch_number)
+  function compare_epoch_version(v1, v2){
+    return compare_integer(v1.epoch_version, v2.epoch_version)
   }
 
 
@@ -93,10 +92,10 @@
 
 
   function compare_upstream_version_numbers(v1, v2){
-    var upstream_digits_comparison = compare_integer_lists(v1.upstream_numbers["digits"], v2.upstream_numbers["digits"])
+    var upstream_digits_comparison = compare_integer_lists(v1.upstream_versions["digits"], v2.upstream_versions["digits"])
 
     if (upstream_digits_comparison === EQUAL){
-        return compare_string_modifiers(v1.upstream_numbers["post-digit"], v2.upstream_numbers["post-digit"])
+        return compare_string_modifiers(v1.upstream_versions["post-digit"], v2.upstream_versions["post-digit"])
     }
     else
         return upstream_digits_comparison
@@ -110,8 +109,8 @@
     return EQUAL
   }
 
-  function compare_revision_numbers(v1, v2){
-    return compare_integer_lists(v1.revision_numbers, v2.revision_numbers)
+  function compare_revision_versions(v1, v2){
+    return compare_integer_lists(v1.revision_versions, v2.revision_versions)
   }
 
 
