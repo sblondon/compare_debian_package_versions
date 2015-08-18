@@ -23,29 +23,47 @@
 
 
   function Version(raw_version){
-    this.epoch = extract_epoch_version(raw_version)
+    var splitted_raw_version = split_raw_version(raw_version)
+    this.epoch = extract_epoch_version(
+        splitted_raw_version["epoch"])
+    this.upstream = extract_upstream_version(
+        splitted_raw_version["upstream"])
+    this.revision = extract_revision_version(
+        splitted_raw_version["revision"])
+  }
 
-    if(raw_version.indexOf(":") !== -1){
-        var without_epoch_version = raw_version.split(":")[1]
+  function split_raw_version(version){
+     if(version.indexOf(":") !== -1){
+        var raw_epoch = version.split(":")[0]
+        var without_epoch_version = version.split(":")[1]
     }
     else{
-        var without_epoch_version = raw_version
+        var raw_epoch = "0"
+        var without_epoch_version = version
     }
-    this.upstream = extract_upstream_version(without_epoch_version)
-    this.revision = extract_revision_version(without_epoch_version)
+
+    var raw_upstream = without_epoch_version.split("-")[0]
+
+    if(without_epoch_version.indexOf("-") !== -1){
+      var raw_revision = without_epoch_version.split("-")[1]
+    }
+    else{
+      var raw_revision = "0"
+    }
+
+    return {
+        "epoch": raw_epoch,
+        "upstream": raw_upstream,
+        "revision": raw_revision,
+    }
   }
 
   function extract_epoch_version(version){
-    if(version.indexOf(":") !== -1){
-      return parseInt(version.split(":")[0])
-    }
-    else{
-      return 0
-    }
+    return parseInt(version.split(":")[0])
   }
 
   function extract_upstream_version(version){
-    var upstream_version = version.split("-")[0]
+    var upstream_version = version
     if(upstream_version.indexOf("~") !== -1){
         var post_digit = upstream_version.split("~")[1]
         var without_post_digit = upstream_version.split("~")[0]
@@ -65,14 +83,10 @@
   }
 
   function extract_revision_version(version){
-    if(version.indexOf("-") !== -1){
-      var _revision_versions = version.split("-")[1].split(".")
-      var revision_versions = []
-      for(var index=0; index < _revision_versions.length; index++){
-        revision_versions.push(parseInt(_revision_versions[index]))
-      }
-    }else{
-          var revision_versions = []
+    var _revision_versions = version.split(".")
+    var revision_versions = []
+    for(var index=0; index < _revision_versions.length; index++){
+      revision_versions.push(parseInt(_revision_versions[index]))
     }
     return revision_versions
   }
