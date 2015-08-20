@@ -63,14 +63,17 @@
   }
 
   function extract_upstream_version(version){
-    var upstream_version = version
-    if(upstream_version.indexOf("~") !== -1){
-        var post_digit = upstream_version.split("~")[1]
-        var without_post_digit = upstream_version.split("~")[0]
+      return split_suffixable_version(version)
+  }
+
+  function split_suffixable_version(version){
+    if(version.indexOf("~") !== -1){
+        var post_digit = version.split("~")[1]
+        var without_post_digit = version.split("~")[0]
     }
     else{
         var post_digit = ""
-        var without_post_digit = upstream_version
+        var without_post_digit = version
     }
 
     var _digits = version.split(".")
@@ -82,13 +85,9 @@
     return {"digits": digits, "post-digit": post_digit}
   }
 
+
   function extract_revision_version(version){
-    var _revision_versions = version.split(".")
-    var revision_versions = []
-    for(var index=0; index < _revision_versions.length; index++){
-      revision_versions.push(parseInt(_revision_versions[index]))
-    }
-    return revision_versions
+    return split_suffixable_version(version)
   }
 
   function compare_epoch_version(v1, v2){
@@ -124,7 +123,13 @@
   }
 
   function compare_revision_versions(v1, v2){
-    return compare_integer_lists(v1.revision, v2.revision)
+    var upstream_digits_comparison = compare_integer_lists(v1.revision["digits"], v2.revision["digits"])
+
+    if (upstream_digits_comparison === EQUAL){
+        return compare_string_modifiers(v1.revision["post-digit"], v2.revision["post-digit"])
+    }
+    else
+        return upstream_digits_comparison
   }
 
 
