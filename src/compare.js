@@ -68,8 +68,11 @@
 
   function split_suffixable_version(version){
     if(version.indexOf("~") !== -1){
-        var post_digit = version.split("~")[1]
-        var without_post_digit = version.split("~")[0]
+        var version_regexp = /(\w+)(~\w+)/g;
+        var match = version_regexp.exec(version);
+
+        var post_digit = match[2]
+        var without_post_digit = match[1]
     }
     else{
         var post_digit = ""
