@@ -67,7 +67,7 @@
   }
 
   function split_suffixable_version(version){
-    var VERSION_REGEXP = /(\w+)(~\w+)/g;
+    var VERSION_REGEXP = /(\w+)([~+]\w+)/g;
     if(version.search(VERSION_REGEXP) !== -1){
         var match = VERSION_REGEXP.exec(version);
 
