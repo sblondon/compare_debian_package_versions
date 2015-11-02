@@ -16,6 +16,12 @@ Execute tests
 $ make check
 
 
+Repository
+----------
+
+[https://github.com/sblondon/compare_debian_package_versions](https://github.com/sblondon/compare_debian_package_versions)
+
+
 Licence
 -------
 
