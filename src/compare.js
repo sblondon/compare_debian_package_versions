@@ -67,8 +67,14 @@
   }
 
   function split_suffixable_version(version){
-    var VERSION_REGEXP = /(\w+)([~+]\w+)/g;
-    if(version.search(VERSION_REGEXP) !== -1){
+    var VERSION_REGEXP_WITHOUT_DIGITS = /([~+]+\w*)/g;
+    var VERSION_REGEXP = /(\w+)([~+]+\w+)/g;
+    if(version.search(VERSION_REGEXP_WITHOUT_DIGITS) !== -1){
+        var match = VERSION_REGEXP_WITHOUT_DIGITS.exec(version);
+        var post_digit = match[1]
+        var without_post_digit = ""
+
+    } else if(version.search(VERSION_REGEXP) !== -1){
         var match = VERSION_REGEXP.exec(version);
 
         var post_digit = match[2]
